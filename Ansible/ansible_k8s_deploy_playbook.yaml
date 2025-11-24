@@ -3,7 +3,7 @@
   hosts: appserver
   gather_facts: no
   become: yes
-
+  become_user: ec2-user
   tasks:
 
     - name: Copy Kubernetes deployment file to app server
@@ -12,20 +12,8 @@
         dest: /home/ec2-user/k8s_deployment.yaml
         mode: '0644'
 
-    - name: Check if kubeconfig exists on remote host
-      stat:
-        path: /home/ec2-user/.kube/config
-      register: kubeconfig_stat
-
-    - name: Copy kubeconfig to target if missing
-      copy:
-        src: "{{ playbook_dir }}/kubeconfig"
-        dest: /home/ec2-user/.kube/config
-        mode: '0600'
-        owner: ec2-user
-      when: not kubeconfig_stat.stat.exists
-
     - name: Apply Kubernetes deployment
       command: kubectl apply -f /home/ec2-user/k8s_deployment.yaml
       environment:
         KUBECONFIG: /home/ec2-user/.kube/config
+
