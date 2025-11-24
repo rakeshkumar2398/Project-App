@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: mc-app
-        image: rakesh2398/projecte2e:18
+        image: rakesh2398/projecte2e:19
         ports:
         - containerPort: 8080
 ---
