@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: mc-app
-        image: devopshubg333/k8s:13
+        image: rakesh2398/projecte2e:18
         ports:
         - containerPort: 8080
 ---
@@ -33,3 +33,4 @@ spec:
     protocol: TCP
   selector:
     app: mc-app
+
