@@ -2,5 +2,5 @@ projectKey=orbartal:mcapp
 serverUrl=http://54.237.22.152:9000
 serverVersion=25.11.0.114957
 dashboardUrl=http://54.237.22.152:9000/dashboard?id=orbartal%3Amcapp
-ceTaskId=5d5f0bd4-0e51-4f0e-b4fc-4f6fb43a7a60
-ceTaskUrl=http://54.237.22.152:9000/api/ce/task?id=5d5f0bd4-0e51-4f0e-b4fc-4f6fb43a7a60
+ceTaskId=da7130fa-1a6c-480d-be07-979664cc069f
+ceTaskUrl=http://54.237.22.152:9000/api/ce/task?id=da7130fa-1a6c-480d-be07-979664cc069f
