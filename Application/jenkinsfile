@@ -6,7 +6,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 echo 'Checking out source code'
-                git branch: 'main', url: 'https://github.com/devopstraininghub/REALTIMEPROJECT.git'
+                git branch: 'main', url: 'https://github.com/rakeshkumar2398/Project-App.git'
             }
         }
 
@@ -23,8 +23,8 @@ pipeline {
                 sh '''
                     cd Application
                     mvn sonar:sonar \
-                      -Dsonar.host.url=http://44.203.120.255:9000 \
-                      -Dsonar.login=squ_857bc378b399cc95305af238a1c3f0e10e243415
+                      -Dsonar.host.url=http://http://54.237.22.152:9000 \
+                      -Dsonar.login=squ_213040d6da058bd20eab0276d98cea9e3fd8595f
                 '''
             }
         }
@@ -33,14 +33,14 @@ pipeline {
             steps {
                 script {
                     echo 'Building Docker Image'
-                    sh 'cd Application && docker build -t devopshubg333/k8s:${BUILD_NUMBER} .'
+                    sh 'cd Application && docker build -t rakesh2398/projecte2e:${BUILD_NUMBER} .'
                 }
             }
         }
 
         stage('Docker Image Scan') {
             steps {
-                sh 'trivy image devopshubg333/k8s:${BUILD_NUMBER}'
+                sh 'trivy image rakesh2398/projecte2e:${BUILD_NUMBER}'
             }
         }
 
@@ -48,25 +48,25 @@ pipeline {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'dockerhub', variable: 'dockerhub')]) {
-                        sh 'echo "${dockerhub}" | docker login -u devopshubg333 --password-stdin'
+                        sh 'echo "${dockerhub}" | docker login -u rakesh2398 --password-stdin'
                     }
-                    sh 'docker push devopshubg333/k8s:${BUILD_NUMBER}'
+                    sh 'docker push rakesh2398/projecte2e:${BUILD_NUMBER}'
                 }
             }
         }
 
         stage('Update Kubernetes Deployment Manifest File') {
             environment {
-                GIT_REPO_NAME = "REALTIMEPROJECT"
-                GIT_USER_NAME = "devopstraininghub"
+                GIT_REPO_NAME = "Project-App"
+                GIT_USER_NAME = "rakeshkumar2398"
             }
             steps {
                 withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                     sh '''
-                        git config user.email "madhu@gmail.com"
-                        git config user.name "madhu"
+                        git config user.email "rakesh@gmail.com"
+                        git config user.name "rakesh"
 
-                        sed -i "s|k8s:.*|k8s:${BUILD_NUMBER}|g" Ansible/k8s_deployment.yaml
+                        sed -i "s/projecte2e:.*/projecte2e:${BUILD_NUMBER}/g" Ansible/k8s_deployment.yaml
 
                         git add .
                         git commit -m "Update deployment image tag to version ${BUILD_NUMBER}"
